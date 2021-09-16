@@ -1,7 +1,7 @@
-// import { useEffect, useState } from 'react'
-
 export const Dashboard = () => {
   return (
-    <h1>Dashboard</h1>
+    <div className='uk-cover-container uk-flex uk-flex-center uk-margin uk-height-large'>
+      Dashboard
+    </div>
   )
 }

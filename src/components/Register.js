@@ -1,27 +1,25 @@
 import { useState } from 'react'
-import { useHistory, Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 
-export const Login = ({ setAuth }) => {
+export const Register = ({ setAuth }) => {
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
-  const history = useHistory()
+  const [email, setEmail] = useState('')
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    axios.post('https://drf-library-api.herokuapp.com/auth/token/login',
-      {
+    axios.post('https://drf-library-api.herokuapp.com/api/auth/users', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Disposition': 'attachement; filename=null'
+      },
+      body: {
+        email: email,
         username: username,
         password: password
-      })
-      .then(res => {
-        console.log(res)
-        if (res.data.auth_token) {
-          setAuth(res.data.auth_token)
-          history.push('/')
-        }
-        return null
-      })
+      }
+    })
   }
 
   const handleChange = (inputType, event) => {
@@ -31,22 +29,34 @@ export const Login = ({ setAuth }) => {
     if (inputType === 'password') {
       setPassword(event.target.value)
     }
+    if (inputType === 'email') {
+      setEmail(event.target.value)
+    }
   }
 
   return (
     <div className='uk-container uk-flex uk-flex-center uk-flex-middle uk-height-large'>
+
       <form className='uk-form-horizontal' onSubmit={handleSubmit}>
+        <label className='uk-form-label'>email</label>
+        <input
+          className='uk-input'
+          type='text'
+          placeholder='jane@gmail.com'
+          value={email}
+          onChange={(e) => handleChange('email', e)}
+        />
         <label className='uk-form-label'>Username</label>
         <input
           className='uk-input'
           type='text'
-          placeholder='email@domain.com or janedoge123'
+          placeholder='janedoge123'
           value={username}
           onChange={(e) => handleChange('username', e)}
         />
         <label className='uk-form-label'>Password</label>
         <input
-          className='uk-input uk-margin-bottom'
+          className='uk-input'
           placeholder='password'
           type='password'
               // using state to pass a value to this attribute
@@ -58,9 +68,8 @@ export const Login = ({ setAuth }) => {
           <button
             className='uk-button uk-margin-right'
             type='submit'
-          >Login
+          >Create Account
           </button>
-          <span>New to Bookify? &nbsp;<Link to='/register'> <a className='uk-link uk-primary' href='#'>Register Now</a></Link></span>
         </div>
       </form>
     </div>
