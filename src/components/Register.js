@@ -6,19 +6,26 @@ export const Register = ({ setAuth }) => {
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
+  const history = useHistory()
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    axios.post('https://drf-library-api.herokuapp.com/api/auth/users', {
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Disposition': 'attachement; filename=null'
-      },
-      body: {
+    axios.post('https://drf-library-api.herokuapp.com/api/auth/users',
+      {
         email: email,
         username: username,
         password: password
       }
+    ).then((res) => {
+      return axios.post('https://drf-library-api.herokuapp.com/auth/token/login', {
+        username: username,
+        password: password
+      }).then((data) => {
+        if (data && data.data.auth_token) {
+          setAuth(data.data.auth_token)
+          history.push('/')
+        }
+      })
     })
   }
 

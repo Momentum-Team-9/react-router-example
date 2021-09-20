@@ -13,7 +13,7 @@ function App () {
       <Navbar token={auth} clearStorage={removeItem} />
       <Switch>
         <Route path='/login' component={() => <Login setAuth={setAuth} />} />
-        <Route path='/register' component={Register} />
+        <Route path='/register' component={() => <Register setAuth={setAuth} />} />
         <Route
           exact path='/' render={() => auth
             ? <Booklist token={auth} />

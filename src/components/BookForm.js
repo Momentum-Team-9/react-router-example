@@ -1,24 +1,32 @@
 import { useState } from 'react'
 import axios from 'axios'
 
-export const BookForm = ({ token }) => {
+export const BookForm = ({ token, setSubmitted }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [pubDate, setPubDate] = useState('')
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    axios.post('https://drf-library-api.herokuapp.com/api/books', {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `token ${token}`
-      },
-      body: {
+    axios.post('https://drf-library-api.herokuapp.com/api/books',
+      {
         title: title,
         author: author,
         publication_date: pubDate
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `token ${token}`
+        }
       }
-    }).then(res => res)
+    ).then(res => {
+      setSubmitted(true)
+      setTitle('')
+      setAuthor('')
+      setPubDate('')
+      return res
+    })
   }
 
   const handleChange = (inputType, event) => {
