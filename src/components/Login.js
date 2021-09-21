@@ -15,7 +15,6 @@ export const Login = ({ setAuth }) => {
         password: password
       })
       .then(res => {
-        console.log(res)
         if (res.data.auth_token) {
           setAuth(res.data.auth_token)
           history.push('/')
